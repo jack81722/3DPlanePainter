@@ -36,9 +36,14 @@ namespace ExMath.Coordinate
             return new Vector2Int(v.x * n, v.y * n);
         }
 
-        public static Vector2Int operator /(Vector2Int v, int n)
+        public static Vector2 operator *(Vector2Int v, float f)
         {
-            return new Vector2Int(v.x / n, v.y / n);
+            return new Vector2(v.x * f, v.y * f);
+        }
+        
+        public static Vector2 operator /(Vector2Int v, float f)
+        {
+            return new Vector2(v.x / f, v.y / f);
         }
 
         public static Vector2Int Round(Vector2 v)
@@ -55,5 +60,7 @@ namespace ExMath.Coordinate
         {
             return new Vector2Int((int)Math.Ceiling(v.x), (int)Math.Ceiling(v.y));
         }
+
+        
     }
 }

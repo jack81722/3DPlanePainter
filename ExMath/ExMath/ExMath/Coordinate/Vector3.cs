@@ -99,6 +99,11 @@ namespace ExMath.Coordinate
             return new Vector3(v.x, v.y);
         }
 
+        public static implicit operator Vector3(Vector3Int v)
+        {
+            return new Vector3(v.x, v.y, v.z);
+        }
+
         public override string ToString()
         {
             return string.Format("({0:0.0}, {1:0.0}, {2:0.0})", x, y, z);

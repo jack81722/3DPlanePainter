@@ -33,9 +33,9 @@ namespace ExMath.Geometry
             this.height = size.y;
         }
 
-        public bool inBound(Vector2 v)
+        public bool inBound(Vector2 position)
         {
-            return (v.x >= xMin && v.x <= xMax) && (v.y >= yMin && v.y <= yMin);
+            return (position.x >= xMin && position.x <= xMax) && (position.y >= yMin && position.y <= yMin);
         }
     }
 

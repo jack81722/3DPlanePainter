@@ -4,14 +4,19 @@ using System.Text;
 
 namespace ExMath.Coordinate
 {
+    /// <summary>
+    /// A vector with x-axis and y-axis integer values
+    /// </summary>
     public struct Vector2Int
     {
+        #region Often used vectors
         public readonly static Vector2Int up = new Vector2Int(0, 1);
         public readonly static Vector2Int down = new Vector2Int(0, -1);
         public readonly static Vector2Int left = new Vector2Int(-1, 0);
         public readonly static Vector2Int right = new Vector2Int(1, 0);
         public readonly static Vector2Int one = new Vector2Int(1, 1);
         public readonly static Vector2Int zero = new Vector2Int(0, 0);
+        #endregion
 
         public int x, y;
 

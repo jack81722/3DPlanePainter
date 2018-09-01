@@ -4,9 +4,13 @@ using System.Text;
 
 namespace ExMath.Coordinate
 {
+    /// <summary>
+    /// A vector with x-axis, y-axis and z-axis values
+    /// </summary>
     [Serializable]
     public struct Vector3
     {
+        #region Often used vectors
         public readonly static Vector3 left = new Vector3(-1, 0, 0);
         public readonly static Vector3 right = new Vector3(1, 0, 0);
         public readonly static Vector3 up = new Vector3(0, 1, 0);
@@ -15,12 +19,17 @@ namespace ExMath.Coordinate
         public readonly static Vector3 backward = new Vector3(0, 0, -1);
         public readonly static Vector3 one = new Vector3(1, 1, 1);
         public readonly static Vector3 zero = new Vector3(0, 0, 0);
+        #endregion
 
         public float x, y, z;
         public float magnitude { get { return (float)Math.Sqrt(x * x + y * y + z * z); } }
         public float sqrMagnitude { get { return x * x + y * y + z * z; } }
 
-
+        /// <summary>
+        /// Constructor of vector3 only with x-axis & y-axis
+        /// </summary>
+        /// <param name="x">x-axis value</param>
+        /// <param name="y">y-axis value</param>
         public Vector3(float x, float y)
         {
             this.x = x;
@@ -28,6 +37,12 @@ namespace ExMath.Coordinate
             z = 0;
         }
 
+        /// <summary>
+        /// Constructor of vector3
+        /// </summary>
+        /// <param name="x">x-axis value</param>
+        /// <param name="y">x-axis value</param>
+        /// <param name="z">z-axis value</param>
         public Vector3(float x, float y, float z)
         {
             this.x = x;
@@ -35,21 +50,33 @@ namespace ExMath.Coordinate
             this.z = z;
         }
 
+        /// <summary>
+        /// Dot product between two vectors
+        /// </summary>
         public static float Dot(Vector3 v1, Vector3 v2)
         {
             return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
         }
 
+        /// <summary>
+        /// Cross product between two vectors
+        /// </summary>
         public static Vector3 Cross(Vector3 v1, Vector3 v2)
         {
             return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.z);
         }
 
+        /// <summary>
+        /// Calculate angle between two vectors (always positive)
+        /// </summary>
         public static float Angle(Vector3 v1, Vector3 v2)
         {
             return (float)(Math.Acos(Dot(v1, v2) / (v1.magnitude * v2.magnitude)) * 180 / Math.PI);
         }
 
+        /// <summary>
+        /// Calculate angle between two vectors (0 ~ 180 & 0 ~ -180)
+        /// </summary>
         public static float SignAngle(Vector3 v1, Vector3 v2)
         {
             var n = Cross(v1, new Vector3(v1.x, v1.y + 1, v1.z));
@@ -59,21 +86,35 @@ namespace ExMath.Coordinate
                 return -Angle(v1, v2);
         }
 
+        /// <summary>
+        /// Calculate distance between two positions
+        /// </summary>
         public static float Distance(Vector3 v1, Vector3 v2)
         {
             return (float)Math.Sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y) + (v1.z - v2.z) * (v1.z - v2.z));
         }
 
+        /// <summary>
+        /// Normalize a vector
+        /// </summary>
         public static Vector3 Normalize(Vector3 v)
         {
             return v.magnitude == 0 ? zero : v / v.magnitude;
         }
 
+        /// <summary>
+        /// Detect two vectors are approach to each other within tolerance
+        /// </summary>
         public static bool Approach(Vector3 v1, Vector3 v2, float tolerance)
         {
             return System.Math.Abs(v1.x - v2.x) < tolerance && System.Math.Abs(v1.y - v2.y) < tolerance && System.Math.Abs(v1.z - v2.z) < tolerance;
         }
 
+        /// <summary>
+        /// Truncate a vector if greater than f
+        /// </summary>
+        /// <param name="v">truncated vector</param>
+        /// <param name="max">max value</param>
         public static Vector3 Truncate(Vector3 v, float f)
         {
             var n = f;

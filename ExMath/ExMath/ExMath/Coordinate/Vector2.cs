@@ -62,6 +62,19 @@ namespace ExMath.Coordinate
             return new Vector2[] { Normalize(new Vector2(v.y, -v.x)), Normalize(new Vector2(-v.y, v.x)) };
         }
 
+        public static bool Approach(Vector2 v1, Vector2 v2, float tolerance)
+        {
+            return System.Math.Abs(v1.x - v2.x) < tolerance && System.Math.Abs(v1.y - v2.y) < tolerance;
+        }
+
+        public static Vector2 Truncate(Vector2 v, float f)
+        {
+            var n = f;
+            n = f / v.magnitude;
+            n = n < 1 ? n : 1;
+            return v * n;
+        }
+
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
             return new Vector2(v1.x + v2.x, v1.y + v2.y);

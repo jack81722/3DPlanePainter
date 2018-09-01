@@ -69,6 +69,19 @@ namespace ExMath.Coordinate
             return v.magnitude == 0 ? zero : v / v.magnitude;
         }
 
+        public static bool Approach(Vector3 v1, Vector3 v2, float tolerance)
+        {
+            return System.Math.Abs(v1.x - v2.x) < tolerance && System.Math.Abs(v1.y - v2.y) < tolerance && System.Math.Abs(v1.z - v2.z) < tolerance;
+        }
+
+        public static Vector3 Truncate(Vector3 v, float f)
+        {
+            var n = f;
+            n = f / v.magnitude;
+            n = n < 1 ? n : 1;
+            return v * n;
+        }
+
         public static Vector3 operator +(Vector3 v1, Vector3 v2)
         {
             return new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
@@ -91,7 +104,7 @@ namespace ExMath.Coordinate
 
         public static Vector3 operator /(Vector3 v, float f)
         {
-            return new Vector3(v.x / f, v.y / f, v.x / f);
+            return new Vector3(v.x / f, v.y / f, v.z / f);
         }
 
         public static implicit operator Vector3(Vector2 v)

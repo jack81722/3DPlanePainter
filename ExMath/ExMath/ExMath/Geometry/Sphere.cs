@@ -5,30 +5,24 @@ namespace ExMath.Geometry
 {
     public struct Sphere
     {
-        public float x, y, z;
+        public Vector3 center;
         public float radius;
-
-        public Vector3 center { get { return new Vector3(x, y, z); } }
 
         public Sphere(float x, float y, float z, float radius)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            center = new Vector3(x, y, z);
             this.radius = radius;
         }
 
         public Sphere(Vector3 center, float radius)
         {
-            x = center.x;
-            y = center.y;
-            z = center.z;
+            this.center = center;
             this.radius = radius;
         }
 
         public bool inBound(Vector3 pos)
         {
-            return (pos.x - x) * (pos.x - x) + (pos.y - y) * (pos.y - y) + (pos.z - z) * (pos.z - z) <= radius * radius;
+            return (pos.x - center.x) * (pos.x - center.x) + (pos.y - center.y) * (pos.y - center.y) + (pos.z - center.z) * (pos.z - center.z) <= radius * radius;
         }
     }
 }

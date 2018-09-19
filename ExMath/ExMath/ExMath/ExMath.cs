@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExMath.Formula
+namespace ExMath
 {
     /// <summary>
     /// The features of Math except System.Math

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExMath.Random
+namespace ExMath
 {
     public static class Random
     {   

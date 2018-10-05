@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExMath.Coordinate;
+using System;
 
 namespace ExMath
 {

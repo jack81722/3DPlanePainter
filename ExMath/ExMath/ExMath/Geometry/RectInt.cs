@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ExMath.Geometry
 {
+    [Serializable]
     public struct RectInt
     {
         public int x, y, width, height;

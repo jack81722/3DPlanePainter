@@ -369,5 +369,173 @@ namespace ExMath
             return (float)(radian * 180 / Math.PI);
         }
         #endregion
+
+
+        #region Ease Functions
+        public static float QuadraticIn(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return t * t;
+        }
+
+        public static double QuadraticIn(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return t * t;
+        }
+
+        public static float QuadraticOut(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return -t * (t - 2);
+        }
+
+        public static double QuadraticOut(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return -t * (t - 2);
+        }
+
+        public static float QuadraticInOut(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            if (t < 0.5f) return t * t * 2;
+            return -1 + t * (4 - 2 * t);
+        }
+
+        public static double QuadraticInOut(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            if (t < 0.5) return t * t * 2;
+            return -1 + t * (4 - 2 * t);
+        }
+
+        public static float CubicIn(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return t * t * t;
+        }
+
+        public static double CubicIn(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return t * t * t;
+        }
+
+        public static float CubicOut(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1) - 1;
+            return t * t * t + 1;
+        }
+
+        public static double CubicOut(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1) - 1;
+            return t * t * t + 1;
+        }
+
+        public static float CubicInOut(float t, float duration)
+        {
+            t = Clamp(t / (duration / 2), 0, 1);
+            if (t < 1) return t * t * t / 2;
+            t -= 2;
+            return (t * t * t + 2) / 2;
+        }
+
+        public static double CubicInOut(double t, double duration)
+        {
+            t = Clamp(t / (duration / 2), 0, 1);
+            if (t < 1) return t * t * t / 2;
+            t -= 2;
+            return (t * t * t + 2) / 2;
+        }
+
+        public static float QuarticIn(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return t * t * t * t;
+        }
+
+        public static double QuarticIn(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1);
+            return t * t * t * t;
+        }
+
+        public static float QuarticOut(float t, float duration)
+        {
+            t = Clamp(t / duration, 0, 1) - 1;
+            return 1 - t * t * t * t;
+        }
+
+        public static double QuarticOut(double t, double duration)
+        {
+            t = Clamp(t / duration, 0, 1) - 1;
+            return 1 - t * t * t * t;
+        }
+
+        public static float QuarticInOut(float t, float duration)
+        {
+            t = Clamp(t / (duration / 2), 0, 1);
+            if (t < 1) return t * t * t * t / 2;
+            t -= 2;
+            return -(t * t * t * t - 2) / 2;
+        }
+
+        public static double QuarticInOut(double t, double duration)
+        {
+            t = Clamp(t / (duration / 2), 0, 1);
+            if (t < 1) return t * t * t * t / 2;
+            t -= 2;
+            return -(t * t * t * t - 2) / 2;
+        }
+        #endregion
+
+        #region Byte Flag
+        public static bool HasFlag(this byte b, byte flag)
+        {
+            return (b & flag) == flag;
+        }
+
+        public static bool HasFlag(this short b, short flag)
+        {
+            return (b & flag) == flag;
+        }
+
+        public static bool HasFlag(this ushort b, ushort flag)
+        {
+            return (b & flag) == flag;
+        }
+
+        public static void AddFlag(this byte b, byte flag)
+        {
+            b |= flag;
+        }
+
+        public static void AddFlag(this short b, short flag)
+        {
+            b |= flag;
+        }
+
+        public static void AddFlag(this ushort b, ushort flag)
+        {
+            b |= flag;
+        }
+
+        public static void RemoveFlag(this byte b, byte flag)
+        {
+            b = (byte)(b & flag);
+        }
+
+        public static void RemoveFlag(this short b, short flag)
+        {
+            b = (short)(b & flag);
+        }
+
+        public static void RemoveFlag(this ushort b, ushort flag)
+        {
+            b = (ushort)(b & flag);
+        }
+        #endregion
     }
 }

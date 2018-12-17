@@ -9,11 +9,11 @@ namespace ExMath.Geometry
     public struct Circle : IGeometry2D
     {
         public float x, y, radius;
-        public Vector2 center { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
+        public Vector2 Center { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
 
-        public Vector2 size { get { return new Vector2(radius, radius); } set { radius = value.x; } }
+        public Vector2 Size { get { return new Vector2(radius, radius); } set { radius = value.x; } }
 
-        public float area { get { return (float)(Math.PI * radius * radius); } }
+        public float Area { get { return (float)(Math.PI * radius * radius); } }
 
         public Circle(float x, float y, float radius)
         {
@@ -51,7 +51,7 @@ namespace ExMath.Geometry
 
         public bool InBound(Vector2 pos)
         {
-            return (center.x - pos.x) * (center.x - pos.x) + (center.y - pos.y) * (center.y - pos.y) <= radius * radius;
+            return (Center.x - pos.x) * (Center.x - pos.x) + (Center.y - pos.y) * (Center.y - pos.y) <= radius * radius;
         }
 
         public static implicit operator Circle(Ellipse ellipse)

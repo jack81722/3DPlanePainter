@@ -53,7 +53,7 @@ namespace ExMath.Coordinate
         {
             float dist = (from.magnitude * to.magnitude);
             if (dist == 0)
-                dist = 1;
+                throw new InvalidOperationException("Vector length must be greater than zero.");
             return (float)Math.Acos(Dot(from, to) / dist);
         }
 
@@ -61,7 +61,7 @@ namespace ExMath.Coordinate
         {
             float dist = (from.magnitude * to.magnitude);
             if (dist == 0)
-                dist = 1;
+                throw new InvalidOperationException("Vector length must be greater than zero.");
             return (float)(Math.Acos(Dot(from, to) / dist) * 180 / Math.PI);
         }
 
@@ -120,7 +120,7 @@ namespace ExMath.Coordinate
 
         public static Vector2 operator *(Vector2 v, double f)
         {
-            return new Vector2((float)(v.x * f), (float)(v.y * f));
+            return new Vector2(v.x * f, v.y * f);
         }
 
         public static Vector2 operator /(Vector2 v, float f)
@@ -130,7 +130,7 @@ namespace ExMath.Coordinate
 
         public static Vector2 operator /(Vector2 v, double f)
         {
-            return new Vector2((float)(v.x / f), (float)(v.x / f));
+            return new Vector2(v.x / f, v.x / f);
         }
         
         public static implicit operator Vector2(Vector2Int v)

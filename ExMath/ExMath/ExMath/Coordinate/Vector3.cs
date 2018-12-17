@@ -40,11 +40,25 @@ namespace ExMath.Coordinate
             z = 0;
         }
 
+        public Vector3(double x, double y)
+        {
+            this.x = (float)x;
+            this.y = (float)y;
+            z = 0;
+        }
+
         public Vector3(float x, float y, float z)
         {
             this.x = x;
             this.y = y;
             this.z = z;
+        }
+
+        public Vector3(double x, double y, double z)
+        {
+            this.x = (float)x;
+            this.y = (float)y;
+            this.z = (float)z;
         }
         #endregion
 
@@ -59,18 +73,29 @@ namespace ExMath.Coordinate
             return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.z);
         }
 
-        public static float Angle(Vector3 v1, Vector3 v2)
+        public static float Angle(Vector3 from, Vector3 to)
         {
-            return (float)(Math.Acos(Dot(v1, v2) / (v1.magnitude * v2.magnitude)) * 180 / Math.PI);
+            if (from.sqrMagnitude * to.sqrMagnitude <= 0)
+                throw new InvalidOperationException("Vector length must be greater than zero.");
+            return (float)(Math.Acos(Dot(from, to) / Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude)) * 180 / Math.PI);
         }
 
-        public static float SignAngle(Vector3 v1, Vector3 v2)
+        public static float SignAngle(Vector3 from, Vector3 to)
         {
-            var n = Cross(v1, new Vector3(v1.x, v1.y + 1, v1.z));
-            if (Dot(Cross(n, v1), v2) / (v1.magnitude * v2.magnitude) >= 0)
-                return Angle(v1, v2);
+            if (from.sqrMagnitude * to.sqrMagnitude <= 0)
+                throw new InvalidOperationException("Vector length must be greater than zero.");
+            var n = Cross(from, new Vector3(from.x, from.y + 1, from.z));
+            if (Dot(Cross(n, from), to) / Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude) >= 0)
+                return Angle(from, to);
             else
-                return -Angle(v1, v2);
+                return -Angle(from, to);
+        }
+
+        public static float Radian(Vector3 from, Vector3 to)
+        {
+            if (from.sqrMagnitude * to.sqrMagnitude <= 0)
+                throw new InvalidOperationException("Vector length must be greater than zero.");
+            return (float)Math.Acos(Dot(from, to) / Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude));
         }
 
         public static float Distance(Vector3 v1, Vector3 v2)
@@ -118,7 +143,22 @@ namespace ExMath.Coordinate
             return new Vector3(v.x * f, v.y * f, v.z * f);
         }
 
+        public static Vector3 operator *(Vector3 v, double f)
+        {
+            return new Vector3(v.x * f, v.y * f, v.z * f);
+        }
+
+        public static Vector3 operator *(double f, Vector3 v)
+        {
+            return new Vector3(v.x * f, v.y * f, v.z * f);
+        }
+
         public static Vector3 operator /(Vector3 v, float f)
+        {
+            return new Vector3(v.x / f, v.y / f, v.z / f);
+        }
+
+        public static Vector3 operator /(Vector3 v, double f)
         {
             return new Vector3(v.x / f, v.y / f, v.z / f);
         }

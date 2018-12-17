@@ -7,10 +7,10 @@ namespace ExMath.Geometry
 {
     public interface IGeometry2D
     {
-        Vector2 center { get; set; }
-        Vector2 size { get; set; }
+        Vector2 Center { get; set; }
+        Vector2 Size { get; set; }
 
-        float area { get; }
+        float Area { get; }
 
         bool InBound(Vector2 pos);
     }

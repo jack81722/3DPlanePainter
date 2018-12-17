@@ -4,7 +4,7 @@ using System;
 namespace ExMath.Geometry
 {
     [Serializable]
-    public struct Sphere
+    public struct Sphere : IGeometry3D
     {
         #region Fields
         /// <summary>
@@ -16,6 +16,19 @@ namespace ExMath.Geometry
         /// Radius of sphere
         /// </summary>
         public float radius;
+
+        public Vector3 Center { get { return center; } set { center = value; } }
+        public Vector3 Size { get { return new Vector3(radius, radius, radius); } set { radius = value.x; } }
+        #endregion
+
+        #region Properties
+        public float xMin { get { return Math.Min(center.x - radius, center.x + radius); } }
+        public float yMin { get { return Math.Min(center.y - radius, center.y + radius); } }
+        public float zMin { get { return Math.Min(center.z - radius, center.z + radius); } }
+        public float xMax { get { return Math.Max(center.x - radius, center.x + radius); } }
+        public float yMax { get { return Math.Max(center.y - radius, center.y + radius); } }
+        public float zMax { get { return Math.Max(center.z - radius, center.z + radius); } }
+        public float Volume { get { return (float)(Math.PI * radius * radius * radius * 4.0 / 3.0); } }
         #endregion
 
         #region Constructors
@@ -43,18 +56,7 @@ namespace ExMath.Geometry
             this.radius = radius;
         }
         #endregion
-
-        #region Public Methods
-        /// <summary>
-        /// Check if position in sphere
-        /// </summary>
-        /// <param name="pos">position</param>
-        public bool inBound(Vector3 pos)
-        {
-            return (pos.x - center.x) * (pos.x - center.x) + (pos.y - center.y) * (pos.y - center.y) + (pos.z - center.z) * (pos.z - center.z) <= radius * radius;
-        }
-        #endregion
-
+        
         #region Static Methods
         /// <summary>
         /// Check if two sphere are intersect
@@ -98,6 +100,31 @@ namespace ExMath.Geometry
         public static bool isIntersect(Sphere sphere, Cube cube)
         {
             return isIntersect(cube, sphere);
+        }
+
+        public bool InBound(Vector3 pos)
+        {
+            return (pos.x - center.x) * (pos.x - center.x) + (pos.y - center.y) * (pos.y - center.y) + (pos.z - center.z) * (pos.z - center.z) <= radius * radius;
+        }
+
+        public bool IsIntersect(IGeometry3D other)
+        {
+            if(other.GetType() == typeof(Sphere))
+            {
+                return
+                (Center.x - other.Center.x) * (Center.x - other.Center.x) +
+                (Center.y - other.Center.y) * (Center.y - other.Center.y) +
+                (Center.z - other.Center.z) * (Center.z - other.Center.z) <
+                (radius + other.Size.x) * (radius + other.Size.x);
+            }
+            else
+            {
+                Vector3 closest = new Vector3(
+                    Math.Max(xMin, Math.Min(other.Center.x, xMax)),
+                    Math.Max(yMin, Math.Min(other.Center.y, yMax)),
+                    Math.Max(zMin, Math.Min(other.Center.z, zMax)));
+                return other.InBound(closest);
+            }
         }
         #endregion
     }

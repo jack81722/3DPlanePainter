@@ -4,7 +4,7 @@ using ExMath.Coordinate;
 namespace ExMath.Geometry
 {
     [Serializable]
-    public struct Cube
+    public struct Cube : IGeometry3D
     {
         public Vector3 center;
         public Vector3 size;
@@ -17,7 +17,11 @@ namespace ExMath.Geometry
         public float yMax { get { return Math.Max(center.y - size.y / 2, center.y + size.y / 2); } }
         public float zMax { get { return Math.Max(center.z - size.z / 2, center.z + size.z / 2); } }
         public Vector3 max { get { return new Vector3(xMax, yMax, zMax); } }
-        public float volume { get { return size.magnitude; } }
+
+        public Vector3 Center { get { return center; } set { center = value; } }
+        public Vector3 Size { get { return size; } set { size = value; } }
+
+        public float Volume { get { return size.x * size.y * size.z; } }
 
         public Cube(float x, float y, float z, float xSize, float ySize, float zSize)
         {
@@ -42,12 +46,7 @@ namespace ExMath.Geometry
             this.center = center;
             this.size = size;
         }
-
-        public bool inBound(Vector3 pos)
-        {
-            return (pos.x >= xMin && pos.x <= xMax) && (pos.y >= yMin && pos.y <= yMax) && (pos.z >= zMin && pos.z <= zMax);
-        }
-
+        
         public static bool isIntersect(Cube a, Cube b)
         {
             Vector3 aMin = a.min;
@@ -78,6 +77,20 @@ namespace ExMath.Geometry
         public static bool isIntersect(Sphere sphere, Cube cube)
         {
             return isIntersect(cube, sphere);
+        }
+
+        public bool IsIntersect(IGeometry3D other)
+        {
+            Vector3 closest = new Vector3(
+                    Math.Max(xMin, Math.Min(other.Center.x, xMax)),
+                    Math.Max(yMin, Math.Min(other.Center.y, yMax)),
+                    Math.Max(zMin, Math.Min(other.Center.z, zMax)));
+            return other.InBound(closest);
+        }
+
+        public bool InBound(Vector3 pos)
+        {
+            return (pos.x >= xMin && pos.x <= xMax) && (pos.y >= yMin && pos.y <= yMax) && (pos.z >= zMin && pos.z <= zMax);
         }
     }
 }

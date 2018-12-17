@@ -29,7 +29,6 @@ namespace ExMath
                 return Vector3.Normalize(new Vector3((float)x, (float)y, (float)z)) * (float)random.NextDouble();
             }
         }
-        #endregion
 
         public static Vector2 GetCirclePoint(float min, float max)
         {

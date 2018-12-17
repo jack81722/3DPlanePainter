@@ -12,11 +12,11 @@ namespace ExMath.Geometry
         public float a, b;
 
         #region Properties
-        public Vector2 size { get { return new Vector2(a, b); } set { a = value.x; b = value.y; } }
+        public Vector2 Size { get { return new Vector2(a, b); } set { a = value.x; b = value.y; } }
 
-        public float area { get { return (float) Math.Abs(Math.PI * a * b); } }
+        public float Area { get { return (float) Math.Abs(Math.PI * a * b); } }
 
-        public Vector2 center { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
+        public Vector2 Center { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
         #endregion
 
         #region Constructor
@@ -67,7 +67,7 @@ namespace ExMath.Geometry
 
         public bool InBound(Vector2 pos)
         {
-            Vector2 vector = pos - center;
+            Vector2 vector = pos - Center;
             float radian = Vector2.Radian(Vector2.right, vector);
             Vector2 ellipsePoint1 = new Vector2(x + a * Math.Cos(radian), y + b * Math.Sin(radian));
             Vector2 ellipsePoint2 = new Vector2(x + a * Math.Cos(radian - Math.PI), y + b * Math.Sin(radian - Math.PI));

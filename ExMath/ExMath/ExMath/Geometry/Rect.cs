@@ -20,10 +20,10 @@ namespace ExMath.Geometry
         public float yMax { get { return Math.Max(y, y + height); } }
         public Vector2 max { get { return new Vector2(xMax, yMax); } }
 
-        public Vector2 center { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
-        public Vector2 size { get { return new Vector2(width, height); } set { width = value.x; height = value.y; } }
+        public Vector2 Center { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
+        public Vector2 Size { get { return new Vector2(width, height); } set { width = value.x; height = value.y; } }
 
-        public float area { get { return Math.Abs(width * height); } }
+        public float Area { get { return Math.Abs(width * height); } }
         #endregion
 
         #region Constructors

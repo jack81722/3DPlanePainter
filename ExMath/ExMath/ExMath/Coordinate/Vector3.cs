@@ -62,6 +62,98 @@ namespace ExMath.Coordinate
         }
         #endregion
 
+        #region Public Methods
+        public enum Plane
+        {
+            XY,
+            YZ,
+            XZ
+        }
+
+        /// <summary>
+        /// Turn vector3 into vector2 by specific axis-plane
+        /// </summary>
+        /// <param name="plane">Axis-plane</param>
+        public Vector2 ToVector2(Plane plane = Plane.XY)
+        {
+            Vector2 v = new Vector2(x, y);
+            switch (plane)
+            {
+                case Plane.XY:
+                    v = new Vector2(x, y);
+                    break;
+                case Plane.YZ:
+                    v = new Vector2(y, z);
+                    break;
+                case Plane.XZ:
+                    v = new Vector2(x, z);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown axis plane.");
+            }
+            return v;
+        }
+
+        public void Plus(Vector3 v)
+        {
+            x += v.x;
+            y += v.y;
+            z += v.z;
+        }
+
+        public void Sub(Vector3 v)
+        {
+            x -= v.x;
+            y -= v.y;
+            z -= v.z;
+        }
+
+        public void Mul(float f)
+        {
+            x *= f;
+            y *= f;
+            z *= f;
+        }
+
+        public void Mul(double f)
+        {
+            x = (float)(x * f);
+            y = (float)(y * f);
+            z = (float)(z * f);
+        }
+
+        public void Div(float f)
+        {
+            x /= f;
+            y /= f;
+            z /= f;
+        }
+
+        public void Div(double f)
+        {
+            x = (float)(x / f);
+            y = (float)(y / f);
+            z = (float)(z / f);
+        }
+
+        public void Inverse()
+        {
+            x = -x;
+            y = -y;
+            z = -z;
+        }
+
+        public float Dot(Vector3 v)
+        {
+            return x * v.x + y * v.y + z * v.z;
+        }
+
+        public float DistanceWith(Vector3 v)
+        {
+            return (float)Math.Sqrt((x - v.x) * (x - v.x) + (y - v.y) * (y - v.y) + (z - v.z) * (z - v.z));
+        }
+        #endregion
+
         #region Public Static Methods
         public static float Dot(Vector3 v1, Vector3 v2)
         {

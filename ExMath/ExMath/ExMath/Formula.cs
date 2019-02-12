@@ -370,6 +370,14 @@ namespace ExMath
         }
         #endregion
 
+        #region Swap
+        public static void Swap<T>(ref T x, ref T y)
+        {
+            var temp = x;
+            x = y;
+            y = temp;
+        }
+        #endregion
 
         #region Ease Functions
         public static float QuadraticIn(float t, float duration)

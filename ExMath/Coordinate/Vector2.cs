@@ -5,14 +5,12 @@ namespace ExMath.Coordinate
     [Serializable]
     public struct Vector2
     {
-        #region Classic Vectors
-        public readonly static Vector2 up    = new Vector2( 0,  1);
-        public readonly static Vector2 down  = new Vector2( 0, -1);
-        public readonly static Vector2 left  = new Vector2(-1,  0);
-        public readonly static Vector2 right = new Vector2( 1,  0);
-        public readonly static Vector2 one   = new Vector2( 1,  1);
-        public readonly static Vector2 zero  = new Vector2( 0,  0);
-        #endregion
+        public static readonly Vector2 up    = new Vector2( 0,  1);
+        public static readonly Vector2 down  = new Vector2( 0, -1);
+        public static readonly Vector2 left  = new Vector2(-1,  0);
+        public static readonly Vector2 right = new Vector2( 1,  0);
+        public static readonly Vector2 one   = new Vector2( 1,  1);
+        public static readonly Vector2 zero  = new Vector2( 0,  0);
 
         #region Fields
         public float x, y;
@@ -139,7 +137,8 @@ namespace ExMath.Coordinate
         {
             float dist = (from.magnitude * to.magnitude);
             if (dist == 0)
-                throw new InvalidOperationException("Vector length must be greater than zero.");
+                //throw new InvalidOperationException("Vector length must be greater than zero.");
+                return 0;
             return (float)Math.Acos(Dot(from, to) / dist);
         }
 
@@ -147,7 +146,8 @@ namespace ExMath.Coordinate
         {
             float dist = (from.magnitude * to.magnitude);
             if (dist == 0)
-                throw new InvalidOperationException("Vector length must be greater than zero.");
+                //throw new InvalidOperationException("Vector length must be greater than zero.");
+                return 0;
             return (float)(Math.Acos(Dot(from, to) / dist) * 180 / Math.PI);
         }
 

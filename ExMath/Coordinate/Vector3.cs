@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExMath.Coordinate
 {
@@ -33,6 +29,13 @@ namespace ExMath.Coordinate
         #endregion
 
         #region Constructors
+        public Vector3(float f)
+        {
+            x = f;
+            y = f;
+            z = f;
+        }
+
         public Vector3(float x, float y)
         {
             this.x = x;
@@ -68,6 +71,27 @@ namespace ExMath.Coordinate
             XY,
             YZ,
             XZ
+        }
+
+        public void Rotate(float angle, Plane plane)
+        {
+            double radian = angle * Math.PI / 180;
+            double cos = Math.Cos(radian), sin = Math.Cos(radian);
+            switch (plane)
+            {
+                case Plane.XY:
+                    x = (float)(x * cos - y * sin);
+                    y = (float)(x * sin + y * cos);
+                    break;
+                case Plane.XZ:
+                    x = (float)(x * cos - z * sin);
+                    z = (float)(x * sin + z * cos);
+                    break;
+                case Plane.YZ:
+                    y = (float)(y * cos - z * sin);
+                    z = (float)(y * sin + z * cos);
+                    break;
+            }
         }
 
         /// <summary>
@@ -152,6 +176,11 @@ namespace ExMath.Coordinate
         {
             return (float)Math.Sqrt((x - v.x) * (x - v.x) + (y - v.y) * (y - v.y) + (z - v.z) * (z - v.z));
         }
+
+        public Vector3 Project(Vector3 v)
+        {
+            return v * (v.Dot(this) / v.Dot(v));
+        }
         #endregion
 
         #region Public Static Methods
@@ -168,14 +197,16 @@ namespace ExMath.Coordinate
         public static float Angle(Vector3 from, Vector3 to)
         {
             if (from.sqrMagnitude * to.sqrMagnitude <= 0)
-                throw new InvalidOperationException("Vector length must be greater than zero.");
+                //throw new InvalidOperationException("Vector length must be greater than zero.");
+                return 0;
             return (float)(Math.Acos(Dot(from, to) / Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude)) * 180 / Math.PI);
         }
 
         public static float SignAngle(Vector3 from, Vector3 to)
         {
             if (from.sqrMagnitude * to.sqrMagnitude <= 0)
-                throw new InvalidOperationException("Vector length must be greater than zero.");
+                //throw new InvalidOperationException("Vector length must be greater than zero.");
+                return 0;
             var n = Cross(from, new Vector3(from.x, from.y + 1, from.z));
             if (Dot(Cross(n, from), to) / Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude) >= 0)
                 return Angle(from, to);
@@ -186,8 +217,40 @@ namespace ExMath.Coordinate
         public static float Radian(Vector3 from, Vector3 to)
         {
             if (from.sqrMagnitude * to.sqrMagnitude <= 0)
-                throw new InvalidOperationException("Vector length must be greater than zero.");
+                //throw new InvalidOperationException("Vector length must be greater than zero.");
+                return 0;
             return (float)Math.Acos(Dot(from, to) / Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude));
+        }
+
+        public static Vector3 Rotate(Vector3 origin, float angle, Plane plane)
+        {
+            double radian = angle * Math.PI / 180;
+            double cos = Math.Cos(radian), sin = Math.Sin(radian);
+            float x, y, z;
+            switch (plane)
+            {
+                case Plane.XY:
+                    x = (float)(origin.x * cos - origin.y * sin);
+                    y = (float)(origin.x * sin + origin.y * cos);
+                    z = origin.z;
+                    break;
+                case Plane.XZ:
+                    x = (float)(origin.x * cos - origin.z * sin);
+                    y = origin.y;
+                    z = (float)(origin.x * sin + origin.z * cos);
+                    break;
+                case Plane.YZ:
+                    x = origin.x;
+                    y = (float)(origin.y * cos - origin.z * sin);
+                    z = (float)(origin.y * sin + origin.z * cos);
+                    break;
+                default:
+                    x = origin.x;
+                    y = origin.y;
+                    z = origin.z;
+                    break;
+            }
+            return new Vector3(x, y, z);
         }
 
         public static float Distance(Vector3 v1, Vector3 v2)
@@ -212,6 +275,8 @@ namespace ExMath.Coordinate
             n = n < 1 ? n : 1;
             return v * n;
         }
+
+        
         #endregion
 
         #region Operator Methods
@@ -223,6 +288,18 @@ namespace ExMath.Coordinate
         public static Vector3 operator -(Vector3 v1, Vector3 v2)
         {
             return new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+        }
+        
+        public static bool operator ==(Vector3 v1, Vector3 v2)
+        {
+            return Math.Abs(v1.x - v2.x) < float.Epsilon && 
+                   Math.Abs(v1.y - v2.y) < float.Epsilon && 
+                   Math.Abs(v1.z - v2.z) < float.Epsilon;
+        }
+
+        public static bool operator !=(Vector3 v1, Vector3 v2)
+        {
+            return !(v1 == v2);
         }
 
         public static Vector3 operator *(Vector3 v, float f)

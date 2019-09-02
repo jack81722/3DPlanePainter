@@ -1,5 +1,5 @@
-﻿using ExMath.Coordinate;
-using System;
+﻿using System;
+using ExMath.Coordinate;
 
 namespace ExMath.Geometry
 {
@@ -17,7 +17,7 @@ namespace ExMath.Geometry
         /// </summary>
         public float radius;
 
-        public Vector3 Center { get { return center; } set { center = value; } }
+        public Vector3 Center { get => center; set => center = value; }
         public Vector3 Size { get { return new Vector3(radius, radius, radius); } set { radius = value.x; } }
         #endregion
 
@@ -30,6 +30,11 @@ namespace ExMath.Geometry
         public float zMax { get { return Math.Max(center.z - radius, center.z + radius); } }
         public float Volume { get { return (float)(Math.PI * radius * radius * radius * 4.0 / 3.0); } }
         #endregion
+
+        public override string ToString()
+        {
+            return $"{nameof(center)}: {center}, {nameof(radius)}: {radius}";
+        }
 
         #region Constructors
         /// <summary>

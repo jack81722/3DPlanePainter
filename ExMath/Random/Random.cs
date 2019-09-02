@@ -22,7 +22,12 @@ namespace ExMath
             }
         }
 
-        public static double NextGaussian(this System.Random r, double mu = 0, double sigma = 1)
+        public static double NextGaussian(double mu = 0, double sigma = 1)
+        {
+            return random.NextGaussian(mu, sigma);
+        }
+
+        private static double NextGaussian(this System.Random r, double mu = 0, double sigma = 1)
         {
             var u1 = r.NextDouble();
             var u2 = r.NextDouble();
@@ -43,7 +48,7 @@ namespace ExMath
                 double angle = random.NextDouble() * System.Math.PI * 2;
                 double x = System.Math.Cos(angle);
                 double y = System.Math.Sin(angle);
-                return new Vector2((float)x, (float)y) * random.NextDouble();
+                return new Vector2((float)x, (float)y) * Math.Sqrt(random.NextDouble());
             }
         }
 
@@ -51,34 +56,45 @@ namespace ExMath
         {
             get
             {
-                double x = Range(-1.0, 1.0);
-                double y = Range(-1.0, 1.0);
-                double z = Range(-1.0, 1.0);
-                return Vector3.Normalize(new Vector3((float)x, (float)y, (float)z)) * (float)random.NextDouble();
+                double u = random.NextDouble();
+                Vector3 v = new Vector3(random.NextGaussian(), random.NextGaussian(), random.NextGaussian());
+                v = v * Math.Pow(u, 1f / 3f);
+                return v;
             }
         }
 
         public static Vector2 GetCirclePoint(float min, float max)
         {
+            if (min > max)
+            {
+                var tmp = min;
+                min = max;
+                max = tmp;
+            }
             double angle = random.NextDouble() * System.Math.PI * 2;
             double x = System.Math.Cos(angle);
             double y = System.Math.Sin(angle);
-            return new Vector2((float)x, (float)y) * Range(min, max);
+            return new Vector2((float)x, (float)y) * (min + Math.Sqrt(random.NextDouble()) * (max - min));
         }
 
         public static Vector3 GetSpherePoint(float min, float max)
         {
-            double x = Range(-1.0, 1.0);
-            double y = Range(-1.0, 1.0);
-            double z = Range(-1.0, 1.0);
-            return Vector3.Normalize(new Vector3((float)x, (float)y, (float)z)) * Range(min, max);
+            if (min > max)
+            {
+                var tmp = min;
+                min = max;
+                max = tmp;
+            }
+            double u = random.NextDouble();
+            Vector3 v = new Vector3(random.NextGaussian(), random.NextGaussian(), random.NextGaussian());
+            double r = min + Math.Pow(u, 1f / 3f) * (max - min);
+            return v * r;
         }
 
         public static Vector3 RandomInCircleOnXZ(float radius)
         {
-            double r = radius * random.NextDouble();
-            double a = random.NextDouble() * 2 * Math.PI;
-            return new Vector3((float)(r * Math.Cos(a)), 0, (float)(r * Math.Sin(a)));
+            Vector2 v = insideUnitCircle;
+            return new Vector3(v.x * radius, 0, v.y * radius);
         }
 
         public static Vector3 RandomOnCircleOnXZ(float radius)
@@ -89,11 +105,7 @@ namespace ExMath
 
         public static Vector3 RandomInSphere(float radius)
         {
-            double u = random.NextDouble();
-            double x = random.NextGaussian(), y = random.NextGaussian(), z = random.NextGaussian();
-            double c = Math.Pow(u, 1f / 3) * radius;
-            Vector3 v = new Vector3((float)x, (float)y, (float)z);
-            return v.normalized * (float)c;
+            return insideUnitSphere * radius;
         }
 
         public static Vector3 RandomOnSphere(float radius)
@@ -125,7 +137,7 @@ namespace ExMath
 
         public static void Shuffle<T>(params T[] array)
         {
-            for(var i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 var r = Range(i, array.Length);
                 var temp = array[i];

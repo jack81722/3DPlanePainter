@@ -22,12 +22,29 @@ namespace ExMath
             }
         }
 
+        public static double Next()
+        {
+            return random.NextDouble();
+        }
+
+        public static int Next(int min, int max)
+        {
+            if (min > max)
+            {
+                var tmp = min;
+                min = max;
+                max = tmp;
+            }
+            double r = random.NextDouble();
+            return min + (int)(r * (max - min));
+        }
+
         public static double NextGaussian(double mu = 0, double sigma = 1)
         {
             return random.NextGaussian(mu, sigma);
         }
 
-        private static double NextGaussian(this System.Random r, double mu = 0, double sigma = 1)
+        public static double NextGaussian(this System.Random r, double mu = 0, double sigma = 1)
         {
             var u1 = r.NextDouble();
             var u2 = r.NextDouble();
@@ -137,7 +154,7 @@ namespace ExMath
 
         public static void Shuffle<T>(params T[] array)
         {
-            for (var i = 0; i < array.Length; i++)
+            for(var i = 0; i < array.Length; i++)
             {
                 var r = Range(i, array.Length);
                 var temp = array[i];

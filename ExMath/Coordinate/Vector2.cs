@@ -5,34 +5,99 @@ namespace ExMath.Coordinate
     [Serializable]
     public struct Vector2
     {
-        public static readonly Vector2 up    = new Vector2( 0,  1);
-        public static readonly Vector2 down  = new Vector2( 0, -1);
-        public static readonly Vector2 left  = new Vector2(-1,  0);
-        public static readonly Vector2 right = new Vector2( 1,  0);
-        public static readonly Vector2 one   = new Vector2( 1,  1);
-        public static readonly Vector2 zero  = new Vector2( 0,  0);
+        public static readonly Vector2 up    = new Vector2( 0,  1, true);
+        public static readonly Vector2 down  = new Vector2( 0, -1, true);
+        public static readonly Vector2 left  = new Vector2(-1,  0, true);
+        public static readonly Vector2 right = new Vector2( 1,  0, true);
+        public static readonly Vector2 one   = new Vector2( 1,  1, true);
+        public static readonly Vector2 zero  = new Vector2( 0,  0, true);
 
         #region Fields
-        public float x, y;
+        public float _x, _y;
+        private float _magnitude;
+        private bool _isChanged, _isNormalized;
         #endregion
 
         #region Properties
-        public float magnitude { get { return (float)Math.Sqrt(x * x + y * y); } }
+        public float x
+        {
+            get { return _x; }
+            set
+            {
+                _x = value;
+                _isChanged = true;
+                _isNormalized = false;
+            }
+        }
+        public float y
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                _isChanged = true;
+                _isNormalized = false;
+            }
+        }
+        public float magnitude
+        {
+            get
+            {
+                if (_isChanged)
+                {
+                    _magnitude = (float)Math.Sqrt(_x * _x + _y * _y);
+                    _isChanged = false;
+                    if (_magnitude == 1)
+                        _isNormalized = true;
+                }
+                return _magnitude;
+            }
+        }
         public float sqrMagnitude { get { return x * x + y * y; } }
-        public Vector2 normalized { get { return this / magnitude; } }
+        public Vector2 normalized
+        {
+            get
+            {
+                if (!_isNormalized)
+                {
+                    var x = _x / magnitude;
+                    var y = _y / magnitude;
+                    return new Vector2(x, y, true);
+                }
+                else
+                {
+                    return this;
+                }
+            }
+        }
         #endregion
 
         #region Constructor
+        private Vector2(float x, float y, bool isNormalized)
+        {   
+            _x = x;
+            _y = y;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = isNormalized;
+        }
+
         public Vector2(float x, float y)
         {
-            this.x = x;
-            this.y = y;
+            _x = x;
+            _y = y;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = false;
         }
 
         public Vector2(double x, double y)
         {
-            this.x = (float)x;
-            this.y = (float)y;
+            _x = (float)x;
+            _y = (float)y;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = false;
         }
         #endregion
 
@@ -119,6 +184,21 @@ namespace ExMath.Coordinate
         public float DistanceWith(Vector2 v)
         {
             return (float)Math.Sqrt((x - v.x) * (x - v.x) - (y - v.y) * (y - v.y));
+        }
+
+        public void Normalize()
+        {
+            if (magnitude == 0)
+            {
+                _x = 0;
+                _y = 0;
+            }
+            else
+            {
+                _x = _x / magnitude;
+                _y = _y / magnitude;
+            }
+            _isNormalized = true;
         }
         #endregion
 

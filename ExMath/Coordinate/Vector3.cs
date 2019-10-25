@@ -17,51 +17,136 @@ namespace ExMath.Coordinate
         #endregion
 
         #region Fields
-        public float x;
-        public float y;
-        public float z;
+        public float _x, _y, _z;
+        private float _magnitude;
+        private bool _isChanged, _isNormalized;
+
+        public float x
+        {
+            get { return _x; }
+            set
+            {
+                _x = value;
+                _isChanged = true;
+                _isNormalized = false;
+            }
+        }
+        public float y
+        {
+            get { return _y; }
+            set
+            {
+                _y = value;
+                _isChanged = true;
+                _isNormalized = false;
+            }
+        }
+        public float z
+        {
+            get { return _z; }
+            set
+            {
+                _z = value;
+                _isChanged = true;
+                _isNormalized = false;
+            }
+        }
         #endregion
 
         #region Properties
-        public float magnitude { get { return (float)Math.Sqrt(x * x + y * y + z * z); } }
+        public float magnitude
+        {
+            get
+            {
+                if(_isChanged)
+                {
+                    _magnitude = (float)Math.Sqrt(_x * _x + _y * _y + _z * _z);
+                    _isChanged = false;
+                    if (_magnitude == 0)
+                        _isNormalized = true;
+                }
+                return _magnitude;
+            }
+        }
         public float sqrMagnitude { get { return x * x + y * y + z * z; } }
-        public Vector3 normalized { get { return this / magnitude; } }
+        public Vector3 normalized
+        {
+            get
+            {
+                if (!_isNormalized)
+                {
+                    var x = _x / magnitude;
+                    var y = _y / magnitude;
+                    var z = _z / magnitude;
+                    return new Vector3(x, y, z, true);
+                }
+                else
+                {
+                    return this;
+                }
+            }
+        }
         #endregion
 
         #region Constructors
+        private Vector3(float x, float y, float z, bool isNormalized)
+        {
+            _x = x;
+            _y = y;
+            _z = z;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = isNormalized;
+        }
+
         public Vector3(float f)
         {
-            x = f;
-            y = f;
-            z = f;
+            _x = f;
+            _y = f;
+            _z = f;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = f == 0;
         }
 
         public Vector3(float x, float y)
         {
-            this.x = x;
-            this.y = y;
-            z = 0;
+            _x = x;
+            _y = y;
+            _z = 0;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = false;
         }
 
         public Vector3(double x, double y)
         {
-            this.x = (float)x;
-            this.y = (float)y;
-            z = 0;
+            _x = (float)x;
+            _y = (float)y;
+            _z = 0;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = false;
         }
 
         public Vector3(float x, float y, float z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            _x = x;
+            _y = y;
+            _z = z;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = false;
         }
 
         public Vector3(double x, double y, double z)
         {
-            this.x = (float)x;
-            this.y = (float)y;
-            this.z = (float)z;
+            _x = (float)x;
+            _y = (float)y;
+            _z = (float)z;
+            _magnitude = 0;
+            _isChanged = true;
+            _isNormalized = false;
         }
         #endregion
 
@@ -180,6 +265,23 @@ namespace ExMath.Coordinate
         public Vector3 Project(Vector3 v)
         {
             return v * (v.Dot(this) / v.Dot(v));
+        }
+
+        public void Normalize()
+        {
+            if (magnitude == 0)
+            {
+                _x = 0;
+                _y = 0;
+                _z = 0;
+            }
+            else
+            {
+                _x = _x / magnitude;
+                _y = _y / magnitude;
+                _z = _z / magnitude;
+            }
+            _isNormalized = true;
         }
         #endregion
 

@@ -95,7 +95,7 @@ namespace ExMath
 
         public Vector3 ToEuler(Quaternion q)
         {
-            Vector3 e;
+            Vector3 e = new Vector3();
             float sqw = q.w * q.w;
             float sqx = q.x * q.x;
             float sqy = q.y * q.y;
@@ -126,7 +126,7 @@ namespace ExMath
         {
             float toRadian = (float)(Math.PI / 180.0);
 
-            Vector3 e;
+            Vector3 e = new Vector3();
             float sqw = q.w * q.w;
             float sqx = q.x * q.x;
             float sqy = q.y * q.y;
